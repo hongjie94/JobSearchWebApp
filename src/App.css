@@ -1,38 +1,122 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   background-color: #282c34;
-  min-height: 100vh;
+}
+
+.app {
+  position:relative;
+  background: red;
+}
+
+
+/******* NavBar ******/
+nav {
+  position: absolute;
+  z-index: 999;
+  background-color: #282c34;
+  width: 100%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  flex-wrap: wrap;
+}
+
+nav > span {
   color: white;
+  font-size: 3.5vmin;
+  padding: 1em 1em 1em 0;
+  font-weight: 800;
+}
+nav > img {
+  padding: 0 .5rem 0 1em;
 }
 
-.App-link {
-  color: #61dafb;
+/******* Form / Input / Button ******/
+input {
+  padding: 1rem;
+  margin: 1rem;
+  width: 200px;
+  border-radius: 5px;
+  box-shadow: none;
+  border: none;
+}
+input:focus{
+  outline: none;
 }
 
-@keyframes App-logo-spin {
-  from {
+.submitBtn {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  margin: 4px 1rem;
+  cursor: pointer;
+  border-radius: 5px;
+  font-weight: 600;
+}
+
+.submitBtn:hover, .pin:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 4px rgba(0, 0, 0, 0.2);
+}
+
+.submitBtn:active, .pin:active {
+  transform: translateY(1px);
+  box-shadow: 0 10px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+/******* Loading-spinner  ******/
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid #383636; /* Black */
+  border-radius: 50%;
+  animation: spinner 1.5s linear infinite;
+  position: absolute;
+  top:40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9999;
+}
+
+@keyframes spinner {
+  0% {
     transform: rotate(0deg);
   }
-  to {
+  100% {
     transform: rotate(360deg);
   }
+}
+
+/* mapPin */
+.pin {
+  background: transparent;
+  width: 20px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.popUp {
+  height: 300px;
+  overflow: scroll;
+  z-index: 99999;
+}
+
+.noSearhResult {
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: white;
+  position: absolute;
+  z-index: 99;
+  display: none;
 }
