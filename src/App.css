@@ -10,7 +10,7 @@ body {
 
 .app {
   position:relative;
-  background: red;
+  background: #343332;
 }
 
 
@@ -44,12 +44,21 @@ input {
   box-shadow: none;
   border: none;
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
 input:focus{
   outline: none;
 }
 
 .submitBtn {
-  background-color: #04AA6D;
+  background-color: #000000;
   border: none;
   color: white;
   padding: 1rem 2rem;
@@ -71,8 +80,9 @@ input:focus{
 }
 
 
-/******* Loading-spinner  ******/
-.loading-spinner {
+/******* Loaders  ******/
+
+.app-loading-spinner {
   width: 50px;
   height: 50px;
   border: 10px solid #f3f3f3; /* Light grey */
@@ -83,7 +93,6 @@ input:focus{
   top:40%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 9999;
 }
 
 @keyframes spinner {
@@ -95,6 +104,73 @@ input:focus{
   }
 }
 
+.search-loading-wrap {
+  position: absolute;
+  z-index: 99;
+  background:rgba(0, 0, 0, 0.7);
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.loading-search {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: inline-block;
+  overflow: hidden;
+  z-index: 9999;
+  top:40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.searchImage {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform: translateZ(0) scale(1);
+  backface-visibility: hidden;
+  transform-origin: 0 0;
+}
+
+.searchImage > div {
+  transform: scale(0.8);
+  transform-origin: 100px 100px;
+}
+
+.searchImage > div > div {
+  animation: searchImage 1s linear infinite;
+  position: absolute
+}
+
+.searchImage > div > div div:nth-child(1) {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 12px solid #f3f3f3;
+  background: transparent;
+}
+
+.searchImage > div > div div:nth-child(2) {
+  width: 12px;
+  height:  35px;
+  transform: rotate(-45deg);
+  background: #f3f3f3;
+  border-radius: 0 0 8px 8px;
+  position: absolute;
+  top: 50px;
+  left: 60px;
+}
+.searchImage div { box-sizing: content-box; }
+
+@keyframes searchImage {
+  0% { transform: translate(2px,2px) }
+  33.33% { transform: translate(102px,2px) }
+  66.66% { transform: translate(42px,102px) }
+  100% { transform: translate(2px,2px) }
+}
+
 /* mapPin */
 .pin {
   background: transparent;
@@ -103,20 +179,70 @@ input:focus{
   cursor: pointer;
 }
 
+.mapboxgl-popup-content {
+  padding: 0 !important
+}
+
 .popUp {
+  padding: 1rem .5rem  1rem 1rem;
   height: 300px;
-  overflow: scroll;
+  overflow: auto;
   z-index: 99999;
 }
 
+.companyIcon, .locationIcon {
+  width: 1rem;
+  padding-right: 5px;
+}
+
+.popUp > h2 {
+  margin-top: 0;
+}
+
+.popUp > h4 {
+  margin: 0
+}
+
+.location-detail {
+  font-size: 11px;
+  color: dimgrey;
+  padding-left: 3px;
+}
+
+.JobDetailInfo {
+  padding: 8px 0 0 3px;
+  font-size: 11px;
+  color: cadetblue;
+  font-weight: 500;
+}
+.JobDetailInfo > span{
+  display: inline-block;
+}
+.JobDetailInfo > p{
+  margin: 0;
+}
+.redirectLink {
+  color: midnightblue;
+  text-decoration: none;
+}
 .noSearhResult {
   top:50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   background: white;
   position: absolute;
   z-index: 99;
-  display: none;
 }
+
+.noSearhResult-text {
+  position: relative;
+  width: 100%;
+  top:50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  margin: auto;
+  text-align: center;
+}
+

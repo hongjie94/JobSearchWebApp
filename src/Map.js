@@ -1,7 +1,10 @@
 import {useState} from 'react';
 import MapBox, { Marker, Popup }  from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import pin from './pin.png';
+import Moment from 'react-moment';
+import pinIcon from './images/pin.png';
+import companyIcon from './images/building.png';
+import locationIcon from './images/placeholder.png'
 
 const Map = ({data}) => {
     const [hoveredJob, setHoveredJob] = useState(null);  
@@ -30,6 +33,7 @@ const Map = ({data}) => {
             key={job.id}
             latitude={job.latitude}
             longitude={job.longitude}
+            zoom = {20}
           >
             <button
               className="marker-btn"
@@ -40,20 +44,18 @@ const Map = ({data}) => {
                 setHoveredJob(job);
               }}
             >
-              <img className='pin' src={pin} alt="map pin" />
+              <img className='pin' src={pinIcon} alt="map pin" />
             </button>
           </Marker>
         ))}
 
          {/* if no search result */}
         <div className='noSearhResult'>
-          <h1>Sorry, no jobs found for that search.</h1>
-          Search Suggestions:
-          <ul>
-            <li>Check your keyword and location above</li>
-            <li>Increase your search radius in filters</li>
-            <li>Try removing filters to find additional jobs</li>
-          </ul>
+          <div className='noSearhResult-text'>
+            <img />
+            <h1>Sorry, no jobs found for that search.</h1>
+              <p>Search Suggestions: Check your keyword and location above</p>
+          </div>
         </div>
 
         {/* job details pop up when pin hovered */}
@@ -67,10 +69,36 @@ const Map = ({data}) => {
           >
           <div className='popUp'>
             <h2>{hoveredJob.title}</h2>
-            <h4>{hoveredJob.company.display_name}</h4>
-            <strong>{hoveredJob.location.display_name}</strong>
+
+            <h4>
+              <img className='companyIcon' src={companyIcon} alt="company icon" /> 
+              {hoveredJob.company.display_name}
+            </h4>
+
+            <strong>
+              <img className='locationIcon' src={locationIcon} alt="location icon" /> 
+              {hoveredJob.location.display_name}
+            </strong>
+            <div className='location-detail'>
+              {(hoveredJob.location.area).map((area, index) =>(
+                  index === ((hoveredJob.location.area.length) -1) ?
+                  <span key={index}>{area}</span>:
+                  <span key={index}>{area} , </span>
+              ))}
+            </div>    
+            <div className='JobDetailInfo'> 
+              <span className="jobLabel">
+                {hoveredJob.category.label} 
+              </span>
+              <p>
+                Posted: <Moment format="MM/DD/YYYY">{hoveredJob.created}</Moment> 
+              </p>
+               <span>Job id:  {hoveredJob.id}</span>
+            </div>
             <p>{hoveredJob.description}</p>
-            <a href={hoveredJob.redirect_url} rel="noreferrer" target="_blank">view job</a>
+
+            <a className="redirectLink" href={hoveredJob.redirect_url} rel="noreferrer" target="_blank">Learn more</a>
+            
           </div>
         </Popup>
         ) : null}   

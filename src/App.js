@@ -36,9 +36,12 @@ function App() {
 
   // fetch datas 
   useEffect(() => { 
-    axios.get(url)
+    axios.get(`https://api.adzuna.com/v1/api/jobs/us/search/50?app_id=20b29dfe&app_key=25d1198733160a904c3aa1f9953ca387&what=php&where=10002
+    `)
+    // axios.get(url)
     .then(res => {
         setData(res.data.results)
+        console.log(res.data.results)
         setIsLoading(false)
     }).catch(err => {
         console.log(err)
@@ -47,8 +50,7 @@ function App() {
 
   return (
     <div className='app'>
-      {isLoading && <div className="loading-spinner">
-      </div>}
+      <div className="app-loading-spinner" />
       <nav>
         <img src={seacgIcon} alt='search icon'></img>
         <span>
@@ -60,20 +62,28 @@ function App() {
           ref={jobTitleRef}
           onChange = {(e)=> setJobTitle(e.target.value)} 
           type="text" 
-          placeholder='Job, Title ...'
+          placeholder='Job title, keywords, or comany'
         />
         
         <input  
         required
           ref={zipCodeRef}
           onChange = {(e)=> setZipCode(e.target.value)} 
-          type="text"
-          placeholder='Zip Code'>
+          type="number"
+          placeholder='Zip code'>
         </input>
         <button className='submitBtn' disabled={isLoading} >Search</button>
         </form>
       </nav>
-      
+      {isLoading &&  
+        <div class="search-loading-wrap">
+        <div class="loading-search">
+          <div class="searchImage">
+            <div><div><div/><div/></div></div>
+          </div>
+        </div>
+        </div>
+      }
       <Map data={data}/>
     </div>
   );
