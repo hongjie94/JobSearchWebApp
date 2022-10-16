@@ -30,7 +30,7 @@ function App() {
     // colse nav when submit button clicked
     setIsNavExpanded(false);
     
-    const headUrl = "https://api.adzuna.com/v1/api/jobs/us/search/10";
+    const headUrl = "https://api.adzuna.com/v1/api/jobs/us/search/50";
     setUrl(`${headUrl}?app_id=${process.env.REACT_APP_ADZUNA_APP_ID}&app_key=${process.env.REACT_APP_ADZUNA_APP_KEY}&what=${jobTitle}&where=${zipcode}`)
   };
 
@@ -39,7 +39,6 @@ function App() {
     axios.get(url)
     .then(res => {
         setData(res.data.results)
-        console.log(res.data.results)
         setIsLoading(false)
     }).catch(err => {
         console.log(err)
