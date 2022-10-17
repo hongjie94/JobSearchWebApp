@@ -20,46 +20,54 @@ const Map = ({data, setIsNavExpanded}) => {
 
   return (
     <>
-      <div class="loading-layer">
+      {/* Loader */}
+      <div className="loading-layer">
         <div className="app-loading-spinner" />
       </div>
+
+      {/* Map */}
       <MapBox
-          {...viewState}
-          onMove={e => setViewState(e.viewState)}
-          style={{width: "100vw", height: "100vh"}}
-          mapStyle="mapbox://styles/mapbox/dark-v10"
-          mapboxAccessToken = {process.env.REACT_APP_MAPBOX_TOKEN} >
-          {data && data.map(job => (
-            <Marker
-              key={job.id}
-              latitude={job.latitude}
-              longitude={job.longitude}
-              zoom = {20}
+        {...viewState}
+        onMove={e => setViewState(e.viewState)}
+        style={{width: "100vw", height: "100vh"}}
+        mapStyle="mapbox://styles/mapbox/dark-v10"
+        mapboxAccessToken = {process.env.REACT_APP_MAPBOX_TOKEN} >
+
+        {/* Markers on the map (Job locations) */}
+        {data && data.map(job => (
+          <Marker
+            key={job.id}
+            latitude={job.latitude}
+            longitude={job.longitude}
+            zoom = {20}
+          >
+            <button
+              className="marker-btn"
+              onMouseEnter={e => {
+                setIsNavExpanded(false);
+                setHoveredJob(job);
+              }}
             >
-              <button
-                className="marker-btn"
-                onMouseEnter={e => {
-                  setIsNavExpanded(false);
-                  setHoveredJob(job);
-                }}
-              >
-                <img className="pin" src={pinIcon} alt="map pin" />
-              </button>
-            </Marker>
-          ))}
-          {/* If no search result */}
-          { data &&
-            data.length === 0 &&
-            <div className="noSearhResult">
+              <img className="pin" src={pinIcon} alt="map pin" />
+            </button>
+          </Marker>
+        ))}
+
+        {/* If no search result */}
+        { data && 
+          data.length === 0 &&
+          <div className="noSearhResult">
             <div className="noSearhResult-contents">
-              <div class="responsiveImgWrap"><img src={noResultImage} alt="no result found"/></div>
-              <h1>Sorry, no jobs found for that search.</h1>
-                <p>Search Suggestions: Check your keyword and location above</p>
+              <div className="responsiveImgWrap"><img src={noResultImage} alt="no result found"/></div>
+                <h1>Sorry, no jobs found for that search.</h1>
+                <p>Search Suggestion: </p>
+                <p>Check your keyword and location above</p>
             </div>
           </div>}
-          {/* Job details (pop up when map pin hovered)  */}
-          { hoveredJob ? (
-            <Popup
+
+        {/* Job details (pop up when map pin hovered)  */}
+        { hoveredJob ? (
+          <Popup
               latitude={hoveredJob.latitude}
               longitude={hoveredJob.longitude}
               onClose={() => {
@@ -91,17 +99,17 @@ const Map = ({data, setIsNavExpanded}) => {
                 <p>
                   Posted: <Moment format="MM/DD/YYYY">{hoveredJob.created}</Moment>
                 </p>
-                 <span>Job id: {hoveredJob.id}</span>
+                {/* <span>Job id: {hoveredJob.id}</span> */}
               </div>
               <p>{hoveredJob.description}</p>
               <div className="linkWrap">
                 <a className="redirectLink" href={hoveredJob.redirect_url} rel="noreferrer" target="_blank">
-                  Apply
+                  Discover more
                 </a>
               </div>
             </div>
           </Popup>
-          ) : null}
+        ) : null}
       </MapBox>
     </>
   )

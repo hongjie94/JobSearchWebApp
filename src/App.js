@@ -14,42 +14,49 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [isNavExpanded, setIsNavExpanded] = useState(false)
 
-
   // useRef
   const zipCodeRef  = useRef("");
   const jobTitleRef = useRef("");
 
   // submit inputs pass to url 
   const handleSearch = () => {
+    // update loading state
     setIsLoading(true);
 
     // clear input fields
     zipCodeRef.current.value = null;
     jobTitleRef.current.value = null;
 
-    // colse nav when submit button clicked
+    // close nav when submit button clicked
     setIsNavExpanded(false);
     
+    // set url for fetch datas 
     const headUrl = "https://api.adzuna.com/v1/api/jobs/us/search/50";
     setUrl(`${headUrl}?app_id=${process.env.REACT_APP_ADZUNA_APP_ID}&app_key=${process.env.REACT_APP_ADZUNA_APP_KEY}&what=${jobTitle}&where=${zipcode}`)
   };
 
   // fetch datas 
   useEffect(() => { 
-    axios.get(url)
-    .then(res => {
-        setData(res.data.results)
-        setIsLoading(false)
-    }).catch(err => {
-        console.log(err)
-    })
-  }, [url]);
+
+    const fetchData = () => {
+      axios.get(url)
+      .then(res => {
+          setData(res.data.results)
+          setIsLoading(false)
+      }).catch(err => {
+          console.log(err)
+      });
+    };
+    isLoading && fetchData();
+
+  }, [url, isLoading]);
 
   return (
     <>
+      {/* Nav Bar */}
       <nav>
         <div className= {isNavExpanded ? "nav-header showBorder" : "nav-header"}>
-          <div class="nav-header-contents">
+          <div className="nav-header-contents">
             <img src={seachIcon} alt="search icon"/>
             <span>
               Job Search
@@ -86,14 +93,16 @@ function App() {
         </form>
       </nav>
       {isLoading &&  
-        <div class="search-loading-wrap">
-        <div class="loading-search">
-          <div class="searchImage">
-            <div><div><div/><div/></div></div>
+        <div className="search-loading-wrap">
+          <div className="loading-search">
+            <div className="searchImage">
+              <div><div><div/><div/></div></div>
+            </div>
           </div>
         </div>
-        </div>
       }
+
+      {/* Map */}
       <Map data={data} setIsNavExpanded={setIsNavExpanded}/>
     </>
   );
